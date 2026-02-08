@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Invoice" ADD COLUMN     "fuelSurcharge" DOUBLE PRECISION NOT NULL DEFAULT 0;
