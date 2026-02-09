@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Quotation</title>
+
+<style>
+@page {
+  size: A4;
+  margin: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #1F2937;
+  margin: 0;
+}
+
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #111827;
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+}
+
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+color: #111827;
+}
+
+.company-info {
+  text-align: right;
+  font-size: 12px;
+  color: #4B5563;
+}
+
+/* ================= TITLE ================= */
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.quote-meta {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+/* ================= SECTIONS ================= */
+.section {
+  margin-bottom: 22px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+/* ================= GRID ================= */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* ================= BOX ================= */
+.box {
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.box p {
+  margin: 4px 0;
+}
+
+/* ================= TABLE ================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  background: #F3F4F6;
+  text-align: left;
+  padding: 8px;
+  font-weight: 700;
+  border-bottom: 1px solid #D1D5DB;
+}
+
+td {
+  padding: 8px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+/* ================= TOTAL ================= */
+.total-box {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total {
+  width: 280px;
+  border: 2px solid #2563EB;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.total-row.final {
+  font-size: 16px;
+  font-weight: 800;
+  color: #2563EB;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  margin-top: 40px;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.signature {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.signature div {
+  width: 45%;
+  border-top: 1px solid #9CA3AF;
+  padding-top: 6px;
+  text-align: center;
+  font-size: 11px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<div class="header">
+<div style="display:flex; align-items:center; gap:12px;">
+  <img
+    src="{{company.logoUrl}}"
+    alt="Company Logo"
+    style="
+      height:48px;
+      width:auto;
+      object-fit:contain;
+    "
+  />
+  <div style="font-size:20px; font-weight:800;">
+    {{company.name}}
+  </div>
+</div>
+
+  <div class="company-info">
+    {{company.address}}<br />
+    {{company.email}}<br />
+    {{company.phone}}
+  </div>
+</div>
+
+<!-- ================= TITLE ================= -->
+<div class="title">Moving Quotation</div>
+<div class="quote-meta">
+  Quotation #: <strong>{{quoteNumber}}</strong><br />
+  Date: {{quote.createdAt}}
+</div>
+
+<!-- ================= TO / FROM ================= -->
+<div class="section grid-2">
+  <div class="box">
+    <div class="section-title">Customer</div>
+    <p><strong>{{customer.fullName}}</strong></p>
+    <p>{{customer.email}}</p>
+    <p>{{customer.phone}}</p>
+  </div>
+
+  <div class="box">
+    <div class="section-title">Moving Details</div>
+    <p>Date: {{quote.movingDate}}</p>
+    <p>Start Time: {{quote.startTime}}</p>
+    <p>Service Type: {{quote.serviceType}}</p>
+  </div>
+</div>
+
+<!-- ================= ADDRESSES ================= -->
+<div class="section grid-2">
+  <div class="box">
+    <div class="section-title">Pickup Address</div>
+    <p>{{quote.pickupAddress}}</p>
+    <p>Floor: {{quote.pickupFloor}}</p>
+    <p>Elevator: {{quote.pickupElevator}}</p>
+  </div>
+
+  <div class="box">
+    <div class="section-title">Drop-off Address</div>
+    <p>{{quote.dropoffAddress}}</p>
+    <p>Floor: {{quote.dropoffFloor}}</p>
+    <p>Elevator: {{quote.dropoffElevator}}</p>
+  </div>
+</div>
+
+<!-- ================= INVENTORY ================= -->
+<div class="section">
+  <div class="section-title">Inventory</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th width="80">Qty</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each quote.inventoryJson}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.quantity}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<!-- ================= ESTIMATES ================= -->
+<div class="section grid-2">
+  <div class="box">
+    <div class="section-title">Estimated Load</div>
+    <p>Volume: {{quote.estimatedVolumeCft}} CFT</p>
+    <p>Weight: {{quote.estimatedWeightLbs}} LBS</p>
+  </div>
+
+  <div class="box">
+    <div class="section-title">Crew</div>
+    <p>Workers: {{quote.workers}}</p>
+    <p>Trucks: {{quote.trucks}}</p>
+  </div>
+</div>
+
+<!-- ================= PRICING ================= -->
+<div class="section">
+  <div class="section-title">Pricing</div>
+
+  <table>
+    <tbody>
+      <tr><td>Hourly / Fixed</td><td>{{quote.pricingMethod}}</td></tr>
+      <tr><td>Estimated Hours</td><td>{{quote.estimatedHours}}</td></tr>
+      <tr><td>Travel Cost</td><td>${{quote.travelCost}}</td></tr>
+      <tr><td>Materials</td><td>${{quote.materialsCost}}</td></tr>
+      <tr><td>Other Fees</td><td>${{quote.otherFees}}</td></tr>
+      <tr><td>Discount</td><td>-${{quote.discount}}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="total-box">
+    <div class="total">
+      <div class="total-row">
+        <span>Taxes</span>
+        <span>${{quote.taxTPS}} / ${{quote.taxTVQ}}</span>
+      </div>
+      <div class="total-row final">
+        <span>Total</span>
+        <span>${{quote.total}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SIGNATURE ================= -->
+<div class="signature">
+  <div>Customer Signature</div>
+  <div>Company Representative</div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<div class="footer">
+  This quotation is valid for {{quote.validityDays}} days.<br />
+  Terms & conditions apply.
+</div>
+
+</body>
+</html>
